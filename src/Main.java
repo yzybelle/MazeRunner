@@ -3,35 +3,43 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
         String[][] data = getMaze("src/Maze");
+
         for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < data[i].length; j++) {
-                System.out.printf(data[i][j] + "");
+                System.out.print(data[i][j]);
             }
             System.out.println();
         }
-        ArrayList<String> coords = new ArrayList<String>();
-        MazeRunner finalData = new MazeRunner(data);
+        MazeRunner mazeSolver = new MazeRunner(data);
+        ArrayList<String> coords = new ArrayList<>();
+
+        int xCoord = 0;
+        int yCoord = 0;
+
+        if (mazeSolver.solveMaze(xCoord, yCoord, coords)) {
+            System.out.println( coords);
+        }
 
     }
+
+
     public static String[][] getMaze(String fileName) {
         File f = new File(fileName);
         Scanner s = null;
         try {
             s = new Scanner(f);
-        }
-        catch (FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             System.out.println("File not found.");
             System.exit(1);
         }
 
-        ArrayList<String> fileData = new ArrayList<String>();
-        while (s.hasNextLine())
+        ArrayList<String> fileData = new ArrayList<>();
+        while (s.hasNextLine()) {
             fileData.add(s.nextLine());
+        }
 
         int rows = fileData.size();
         int cols = fileData.get(0).length();
@@ -45,8 +53,5 @@ public class Main {
             }
         }
         return maze;
-
     }
-
-
 }
