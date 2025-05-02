@@ -36,38 +36,49 @@ public class MazeRunner {
         return inBounds(row, newCol) && maze[row][newCol].equals(".");
     }
 
-    public boolean solveMaze(int row, int col, ArrayList<String> path) {
-        if (row == maze.length - 1 && col == maze[0].length - 1) {
-            path.add("(" + row + ", " + col + ")"+"--->");
-            return true;
+
+    public boolean solveMaze(int row, int col, ArrayList<String> coords) {
+        ArrayList<String> visited = new ArrayList<String>();
+        visited.add("("+row+","+col+")");
+
+        while (!(row == maze.length - 1 && col == maze[0].length - 1)){
+
+            if(goUp(row,col)&&!visited.contains("("+(row-1)+","+col+")")){
+                row--;
+                visited.add("("+row+","+col+")");
+            }
+            else if(goDown(row,col)&&!visited.contains("("+(row+1)+","+col+")")){
+                row++;
+                visited.add("("+row+","+col+")");
+            }
+
+            else if(goRight(row,col)&&!visited.contains("("+row+","+(col+1)+")")){
+                col++;
+                visited.add("("+row+","+col+")");
+            }
+
+            else if(goLeft(row,col)&&!visited.contains("("+row+","+(col-1)+")")){
+                col--;
+                visited.add("("+row+","+col+")");
+            }
+            else {
+                maze[row][col]="#";
+                row = 0;
+                col = 0;
+                visited.clear();
+                visited.add("(" + row + "," + col + ")");
+                if(!goDown(row,col)&&!goLeft(row, col)&&!goUp(row, col)&&!goRight(row, col)){
+                    return false;
+                }
+            }
+
+
+
+    }
+        for (int i = 0; i < visited.size(); i++) {
+            coords.add(visited.get(i));
         }
-
-        maze[row][col] = "#";
-
-
-        if (goDown(row, col) && solveMaze(row + 1, col, path)&& inBounds(row+1,col)) {
-            path.add(0, "(" + row + ", " + col + ")"+"--->");
-            return true;
-        }
-
-        if (goRight(row, col) && solveMaze(row, col + 1, path)&&inBounds(row,col+1)) {
-            path.add(0, "(" + row + ", " + col + ")"+"--->");
-            return true;
-        }
-
-        if (goUp(row, col) && solveMaze(row - 1, col, path)&&inBounds(row-1,col)) {
-            path.add(0, "(" + row + ", " + col + ")"+"--->");
-            return true;
-        }
-
-        if (goLeft(row, col) && solveMaze(row, col - 1, path)&&inBounds(row,col-1)) {
-            path.add(0, "(" + row + ", " + col + ")"+"--->");
-            return true;
-        }
-
-
-        maze[row][col] = ".";
-        return false;
+return true;
     }
 
 

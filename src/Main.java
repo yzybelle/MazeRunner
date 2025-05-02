@@ -20,7 +20,9 @@ public class Main {
         int yCoord = 0;
 
         if (mazeSolver.solveMaze(xCoord, yCoord, coords)) {
-            System.out.println( coords);
+            for (int i = 0; i < coords.size(); i++) {
+                System.out.printf(coords.get(i)+"-->");
+            }
         }
 
     }
